@@ -1,0 +1,47 @@
+name: Annual statutory review
+# Gesetzliche Jahreswerte lassen sich nicht zuverlässig automatisch aus dem
+# Gesetz "scrapen". Was sich zuverlässig automatisieren lässt, ist die
+# Erinnerung: Dieser Job öffnet jedes Jahr Anfang Januar (und Mitte Oktober,
+# wenn die SV-RechengrößenVO typischerweise im Entwurf vorliegt) ein Issue
+# mit der vollständigen Prüfliste. Die Regression (verify.yml) stellt danach
+# sicher, dass geänderte Konstanten konsistent eingepflegt wurden.
+
+on:
+  schedule:
+    - cron: "0 7 2 1 *"    # 2. Januar
+    - cron: "0 7 15 10 *"  # 15. Oktober (VO-Entwurf für das Folgejahr)
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  open-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const year = new Date().getFullYear() + (new Date().getMonth() >= 9 ? 1 : 0);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Jahreswerte ${year} prüfen`,
+              labels: ["jahreswerte"],
+              body: [
+                `Prüfliste für die gesetzlichen Werte ${year}. Quelle jeweils angeben, dann Konstanten in nettoklar.html (Block C) und rates.json (constants) aktualisieren. Danach läuft verify.yml als Konsistenz-Netz.`,
+                ``,
+                `- [ ] Mindestlohn (MiLoG / Mindestlohnkommission)`,
+                `- [ ] Minijob-Grenze = Mindestlohn × 130 / 3, aufgerundet (§8 Abs. 1a SGB IV)`,
+                `- [ ] Übergangsbereich-Obergrenze (aktuell 2.000 €, §20 Abs. 2 SGB IV)`,
+                `- [ ] BBG Kranken-/Pflegeversicherung (SV-RechengrößenVO)`,
+                `- [ ] BBG Renten-/Arbeitslosenversicherung (SV-RechengrößenVO)`,
+                `- [ ] JAEG / Versicherungspflichtgrenze (SV-RechengrößenVO; ${year === 2027 ? "Achtung: Sonderanhebung auf ca. 84.600 € durch GKV-BStabG" : "auf Sondergesetze achten"})`,
+                `- [ ] Max. AG-Zuschuss PKV (KV und PV, folgt aus BBG + Ø-Zusatzbeitrag)`,
+                `- [ ] Durchschnittlicher Zusatzbeitrag (BMG-Bekanntgabe, meist November)`,
+                `- [ ] Beitragssätze RV / AV / PV inkl. PV-Kinderlosenzuschlag`,
+                `- [ ] Neuer BMF-Programmablaufplan: Tarifformel, Grundfreibetrag, Kinderfreibetrag, Soli-Freigrenze, Prüftabelle in tools/verify-pap.mjs austauschen`,
+                `- [ ] Pendlerpauschale / steuerfreie Grenzen in den Texten (50-€-Sachbezug, VL)`,
+                `- [ ] "Geprüft für"-Abschnitt: Datum und Quellenzeilen aktualisieren`
+              ].join("\n")
+            });
