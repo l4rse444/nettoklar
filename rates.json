@@ -1,0 +1,94 @@
+{
+  "stand": "2026-07-06",
+  "quelle": "Kassenmeldungen 2025/26; kanonisch: GKV-Spitzenverband Krankenkassenliste (§242 Abs. 5 SGB V)",
+  "zusatzDefault": 2.9,
+  "kkCheapest": {
+    "name": "hkk Krankenkasse",
+    "rate": 2.59
+  },
+  "kassen": [
+    [
+      "Techniker Krankenkasse (TK)",
+      2.69
+    ],
+    [
+      "Barmer",
+      3.29
+    ],
+    [
+      "DAK-Gesundheit",
+      3.2
+    ],
+    [
+      "AOK Baden-Württemberg",
+      2.99
+    ],
+    [
+      "AOK Bayern",
+      2.69
+    ],
+    [
+      "AOK Bremen/Bremerhaven",
+      3.29
+    ],
+    [
+      "AOK Hessen",
+      2.98
+    ],
+    [
+      "AOK Niedersachsen",
+      2.98
+    ],
+    [
+      "AOK Nordost",
+      3.5
+    ],
+    [
+      "AOK NordWest",
+      2.99
+    ],
+    [
+      "AOK PLUS (Sachsen/Thüringen)",
+      3.1
+    ],
+    [
+      "AOK Rheinland/Hamburg",
+      3.29
+    ],
+    [
+      "AOK Rheinland-Pfalz/Saarland",
+      2.47
+    ],
+    [
+      "AOK Sachsen-Anhalt",
+      2.89
+    ],
+    [
+      "IKK classic",
+      3.4
+    ],
+    [
+      "hkk Krankenkasse",
+      2.59
+    ],
+    [
+      "HEK (Hanseatische Krankenkasse)",
+      2.89
+    ],
+    [
+      "Audi BKK",
+      2.6
+    ],
+    [
+      "BIG direkt gesund",
+      3.69
+    ]
+  ],
+  "constants": {
+    "mindestlohn": 13.9,
+    "minijobGrenze": 603,
+    "jaegMonth": 6450,
+    "privEmployerCapKV": 508.59,
+    "privEmployerCapPV": 104.63
+  }
+}
