@@ -3,11 +3,11 @@
    Prüft den Rechenkern gegen die amtliche Prüftabelle des
    BMF-Programmablaufplans 2026 (endgültige, korrigierte Fassung, 12.11.2025)
    sowie interne Fixtures. Exit-Code 1 bei jeder Abweichung.
-   Aufruf: node tools/verify-pap.mjs [pfad/zu/nettoklar.html]              */
+   Aufruf: node tools/verify-pap.mjs [pfad/zu/index.html]              */
 
 import { readFileSync } from "node:fs";
 
-const file = process.argv[2] || "nettoklar.html";
+const file = process.argv[2] || "index.html";
 const html = readFileSync(file, "utf8");
 const script = html.match(/<script>([\s\S]*)<\/script>/)[1];
 const cut = script.indexOf("   I18N");
