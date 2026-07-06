@@ -1,13 +1,10 @@
 name: Verify calculation core
-# Läuft bei jedem Push und wöchentlich. Schlägt fehl, sobald der Rechenkern
-# von der amtlichen PAP-2026-Prüftabelle abweicht (z. B. nach einer Änderung
-# an nettoklar.html oder wenn Konstanten versehentlich verstellt wurden).
 
 on:
   push:
   pull_request:
   schedule:
-    - cron: "17 5 * * 1"   # montags 05:17 UTC
+    - cron: "17 5 * * 1"
   workflow_dispatch:
 
 jobs:
@@ -19,4 +16,7 @@ jobs:
         with:
           node-version: 20
       - name: Run PAP regression
-        run: node tools/verify-pap.mjs index.html
+        run: |
+          FILE=index.html
+          [ -f "$FILE" ] || FILE=nettoklar.html
+          node tools/verify-pap.mjs "$FILE"
