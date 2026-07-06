@@ -1,0 +1,81 @@
+name: Update Kassen rates
+# Holt wöchentlich die amtliche Krankenkassenliste des GKV-Spitzenverbands
+# (Pflichtveröffentlichung nach §242 Abs. 5 SGB V), erzeugt rates.json neu
+# und öffnet bei Änderungen einen Pull Request. KEIN automatischer Merge:
+# ein Mensch prüft den Diff, dann erst geht die Änderung live.
+#
+# Hinweis: Der PDF-Parser ist bewusst defensiv. Ändert der GKV-Spitzenverband
+# das Layout, schlägt der Job fehl statt stillschweigend falsche Werte zu
+# schreiben. Alternative maschinenlesbare Quelle: ITSG-Beitragssatzdatei
+# (https-Download mit RSS-Feed), falls das PDF-Parsing zu fragil wird.
+
+on:
+  schedule:
+    - cron: "43 6 * * 1"   # montags 06:43 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch official list
+        run: |
+          curl -fsSL -o kassenliste.pdf "https://www.gkv-spitzenverband.de/krankenkassenliste.pdf"
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+          pdftotext -layout kassenliste.pdf kassenliste.txt
+
+      - name: Build rates.json
+        run: |
+          python3 - <<'EOF'
+          import json, re, sys, datetime
+
+          txt = open("kassenliste.txt", encoding="utf-8").read()
+
+          # Nur die Kassen aktualisieren, die nettoklar anzeigt: die bestehende
+          # Liste in rates.json ist die Auswahl; hier werden nur die Sätze erneuert.
+          current = json.load(open("rates.json", encoding="utf-8"))
+
+          # Zeilenformat der amtlichen Liste: "<Name> <www...> <Satz>%"
+          rates = {}
+          for line in txt.splitlines():
+              m = re.match(r"\s*(.+?)\s{2,}\S*\s+(\d+,\d+)\s*%?\s*$", line)
+              if m:
+                  rates[m.group(1).strip()] = float(m.group(2).replace(",", "."))
+          if len(rates) < 50:
+              sys.exit("Parser fand nur %d Kassen; Layout vermutlich geaendert. Abbruch." % len(rates))
+
+          def find(name):
+              key = name.split("(")[0].strip().lower()
+              for k, v in rates.items():
+                  if key in k.lower() or k.lower() in key:
+                      return v
+              return None
+
+          changed = False
+          for entry in current["kassen"]:
+              v = find(entry[0])
+              if v is not None and abs(v - entry[1]) > 0.001:
+                  entry[1] = v
+                  changed = True
+
+          cheapest = min(current["kassen"], key=lambda e: e[1])
+          current["kkCheapest"] = {"name": cheapest[0], "rate": cheapest[1]}
+          current["stand"] = datetime.date.today().isoformat()
+
+          json.dump(current, open("rates.json", "w", encoding="utf-8"),
+                    ensure_ascii=False, indent=2)
+          print("changed:", changed)
+          EOF
+
+      - name: Open pull request on change
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "rates: Kassenliste aktualisiert (GKV-Spitzenverband)"
+          title: "Kassenliste aktualisiert"
+          body: |
+            Automatischer Abgleich mit der amtlichen Krankenkassenliste des
+            GKV-Spitzenverbands (§242 Abs. 5 SGB V). Bitte Diff prüfen und mergen.
+          branch: bot/update-kassen
+          add-paths: rates.json
