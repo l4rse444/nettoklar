@@ -19,4 +19,4 @@ jobs:
         with:
           node-version: 20
       - name: Run PAP regression
-        run: node tools/verify-pap.mjs nettoklar.html
+        run: node tools/verify-pap.mjs index.html
