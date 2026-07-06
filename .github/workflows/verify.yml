@@ -18,5 +18,5 @@ jobs:
       - name: Run PAP regression
         run: |
           FILE=index.html
-          [ -f "$FILE" ] || FILE=nettoklar.html
+          [ -f "$FILE" ] || FILE=index.html
           node tools/verify-pap.mjs "$FILE"
