@@ -330,23 +330,27 @@
   @media(max-width:640px){.rates .src{display:none}}
 
   footer{
-    max-width:1080px;margin:48px auto 0;padding:28px 24px 48px;
+    max-width:1080px;margin:56px auto 0;padding:36px 24px 44px;
     border-top:1px solid var(--hairline);
-    display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    display:grid;grid-template-columns:1fr 1fr;gap:28px 64px;
     font-size:12.5px;color:var(--grey);
   }
-  footer .fcol{max-width:520px;line-height:1.6}
+  footer .fcol{line-height:1.65}
+  .foot-bottom{
+    grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;
+    gap:12px 24px;flex-wrap:wrap;border-top:1px solid var(--hairline);padding-top:18px;margin-top:6px;
+  }
+  @media (max-width:720px){
+    footer{grid-template-columns:1fr;gap:22px}
+  }
   footer b{color:var(--ink);font-weight:600}
-  .legal-links{display:flex;gap:16px;flex-basis:100%;padding-top:4px}
+  .legal-links{display:flex;gap:16px}
   .legal-links button{
     background:none;border:none;font:inherit;font-size:12.5px;color:var(--grey);
     cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px;
   }
   .legal-links button:hover{color:var(--ink)}
-  .foot-meta{
-    flex-basis:100%;font-size:11.5px;color:var(--grey-light);
-    padding-top:14px;margin-top:6px;border-top:1px solid var(--hairline);
-  }
+  .foot-meta{font-size:11.5px;color:var(--grey-light)}
   .foot-meta a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
   .foot-meta a:hover{color:var(--ink)}
   .legal-page{max-width:1080px;margin:24px auto 0;padding:0 24px}
@@ -788,11 +792,13 @@
 <footer>
   <div class="fcol" id="footLegal"></div>
   <div class="fcol" id="footPrivacy"></div>
-  <div class="legal-links">
-    <button id="lnkImpressum" type="button"></button>
-    <button id="lnkDatenschutz" type="button"></button>
+  <div class="foot-bottom">
+    <div class="foot-meta" id="footMeta"></div>
+    <div class="legal-links">
+      <button id="lnkImpressum" type="button"></button>
+      <button id="lnkDatenschutz" type="button"></button>
+    </div>
   </div>
-  <div class="foot-meta" id="footMeta"></div>
 </footer>
 
 <script>
@@ -1190,11 +1196,11 @@ de: {
   footLegal:"<b>nettoklar</b> ist ein Rechner, keine Steuerberatung. Er berechnet deine Abrechnung nach dem offiziellen Tarif 2026 und zeigt die Arithmetik hinter deinen Optionen. Für Entscheidungen zu deiner persönlichen Situation sprich mit einem Steuerberater oder Lohnsteuerhilfeverein. Die Ergebnisse gelten für ein normales Angestelltenverhältnis ohne Einmalzahlungen.",
   footPrivacy:"<b>Datenschutz durch Architektur.</b> Diese Seite hat keine Berechnung auf einem Server, kein Tracking deiner Eingaben, keinen Upload. Dein Gehalt, deine Familiensituation und deine Kirchenmitgliedschaft sind besonders geschützte Daten. Der sicherste Ort dafür ist eine Seite, die sie technisch gar nicht sehen kann.",
     navCalc:"Rechner", navOptim:"Optimieren", navVerified:"Quellen & Prüfung",
-  footMeta:'Berechnung nach dem amtlichen BMF-Programmablaufplan 2026 (Stand 12.11.2025) · Alle 516 amtlichen Prüfwerte exakt · <a href="https://github.com/l4rse444/nettoklar" rel="noopener">Quelltext auf GitHub</a>',
+  footMeta:"Berechnung nach dem amtlichen BMF-Programmablaufplan 2026 (Stand 12.11.2025) · Alle 516 amtlichen Prüfwerte exakt",
   lnkImpressum:"Impressum", lnkDatenschutz:"Datenschutzerklärung",
   impH:"Impressum",
   impBody:`<p>Angaben gemäß §5 DDG:</p>
-<p><span class="ph">[Vor- und Nachname]</span><br><span class="ph">[Straße und Hausnummer]</span><br><span class="ph">[PLZ und Ort]</span><br>Deutschland</p>
+<p>Lars Eilermann<br><span class="ph">[Straße und Hausnummer]</span><br><span class="ph">[PLZ und Ort]</span><br>Deutschland</p>
 <p>Kontakt: <span class="ph">[E-Mail-Adresse]</span></p>
 <h3>Haftung für Inhalte</h3>
 <p>Diese Seite ist ein Rechenwerkzeug und ersetzt keine Steuer- oder Rechtsberatung. Alle Berechnungen erfolgen nach bestem Wissen auf Grundlage der im Abschnitt "Geprüft für 2026" dokumentierten Rechtsquellen, ohne Gewähr für Vollständigkeit und Richtigkeit im Einzelfall. Verbindlich ist allein die Abrechnung deines Arbeitgebers bzw. der Bescheid des Finanzamts.</p>
@@ -1203,7 +1209,7 @@ de: {
   dsH:"Datenschutzerklärung",
   dsBody:`<p><b>Kurzfassung: Diese Seite erhebt selbst keine Daten.</b> Deine Eingaben (Gehalt, Familiensituation, Kirchenmitgliedschaft, Versicherung) werden ausschließlich lokal in deinem Browser verarbeitet. Es gibt keine Übertragung an einen Server, keine Speicherung, keine Cookies, kein Tracking und keine Analyse-Dienste.</p>
 <h3>Verantwortlicher</h3>
-<p><span class="ph">[Name und Anschrift wie im Impressum]</span>, E-Mail: <span class="ph">[E-Mail-Adresse]</span></p>
+<p>Lars Eilermann, <span class="ph">[Anschrift wie im Impressum]</span>, E-Mail: <span class="ph">[E-Mail-Adresse]</span></p>
 <h3>Berechnung im Browser</h3>
 <p>Sämtliche Berechnungen laufen als JavaScript auf deinem Gerät. Die Seite hat technisch keine Möglichkeit, deine Eingaben einzusehen: Es existiert kein Berechnungs-Server. Auch der lokale Speicher des Browsers (Cookies, localStorage) wird nicht genutzt; nach dem Schließen des Tabs sind alle Eingaben weg.</p>
 <h3>Hosting und Server-Logfiles</h3>
@@ -1346,12 +1352,12 @@ en: {
   footLegal:"<b>nettoklar</b> is a calculator, not tax advice. It computes your payslip using the official 2026 tariff and shows the arithmetic behind your options. For decisions about your personal situation, talk to a Steuerberater or Lohnsteuerhilfeverein. Results assume a standard employment relationship without one-off payments.",
   footPrivacy:"<b>Privacy, by architecture.</b> This page has no server-side calculation, no tracking of your inputs, no upload. Your salary, family situation and church membership are specially protected data. The safest place for them is a page that technically cannot see them.",
     navCalc:"Calculator", navOptim:"Optimise", navVerified:"Sources & checks",
-  footMeta:'Calculated per the official BMF Programmablaufplan 2026 (12 Nov 2025) · All 516 official test values exact · <a href="https://github.com/l4rse444/nettoklar" rel="noopener">Source code on GitHub</a>',
+  footMeta:"Calculated per the official BMF Programmablaufplan 2026 (12 Nov 2025) · All 516 official test values exact",
   lnkImpressum:"Legal notice", lnkDatenschutz:"Privacy policy",
   impH:"Legal notice (Impressum)",
   impBody:`<p><i>The German version is the legally binding one.</i></p>
 <p>Information per §5 DDG (German Digital Services Act):</p>
-<p><span class="ph">[Full name]</span><br><span class="ph">[Street and number]</span><br><span class="ph">[Postal code and city]</span><br>Germany</p>
+<p>Lars Eilermann<br><span class="ph">[Street and number]</span><br><span class="ph">[Postal code and city]</span><br>Germany</p>
 <p>Contact: <span class="ph">[email address]</span></p>
 <h3>Liability for content</h3>
 <p>This page is a calculation tool and no substitute for tax or legal advice. All calculations are made to the best of our knowledge based on the legal sources documented in the "Verified for 2026" section, without guarantee of completeness or accuracy in individual cases. Only your employer's payslip and the tax office's assessment are binding.</p>
@@ -1361,7 +1367,7 @@ en: {
   dsBody:`<p><i>The German version is the legally binding one.</i></p>
 <p><b>In short: this page itself collects no data.</b> Your inputs (salary, family situation, church membership, insurance) are processed exclusively in your browser. There is no transmission to a server, no storage, no cookies, no tracking and no analytics.</p>
 <h3>Controller</h3>
-<p><span class="ph">[Name and address as in the legal notice]</span>, email: <span class="ph">[email address]</span></p>
+<p>Lars Eilermann, <span class="ph">[address as in the legal notice]</span>, email: <span class="ph">[email address]</span></p>
 <h3>Calculation in the browser</h3>
 <p>All calculations run as JavaScript on your device. The page technically cannot see your inputs: there is no calculation server. Browser storage (cookies, localStorage) is not used either; closing the tab discards all inputs.</p>
 <h3>Hosting and server logs</h3>
