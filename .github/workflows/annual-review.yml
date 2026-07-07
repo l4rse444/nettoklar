@@ -42,6 +42,9 @@ jobs:
                 `- [ ] Beitragssätze RV / AV / PV inkl. PV-Kinderlosenzuschlag`,
                 `- [ ] Neuer BMF-Programmablaufplan: Tarifformel, Grundfreibetrag, Kinderfreibetrag, Soli-Freigrenze, Prüftabelle in tools/verify-pap.mjs austauschen`,
                 `- [ ] Pendlerpauschale / steuerfreie Grenzen in den Texten (50-€-Sachbezug, VL)`,
-                `- [ ] "Geprüft für"-Abschnitt: Datum und Quellenzeilen aktualisieren`
+                `- [ ] "Geprüft für"-Abschnitt: Datum und Quellenzeilen aktualisieren`,
+                `- [ ] Nicht-kommerziell-Status: weiterhin KEINE Werbung, Affiliate-Links, Bezahlangebote oder Spendenknöpfe? (Vor jeder Monetarisierung: Impressum-Service buchen und Impressum wieder einbauen, sonst Abmahnrisiko)`,
+                `- [ ] E-Mail-Weiterleitung kontakt@lohn-lupe.de: Testmail schicken, kommt sie an?`,
+                `- [ ] Domain lohn-lupe.de: Verlängerung und Zahlungsmethode bei GoDaddy prüfen`
               ].join("\n")
             });
