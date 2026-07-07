@@ -18,13 +18,26 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
+      - name: Check preconditions
+        run: |
+          if [ ! -f rates.json ]; then
+            echo "::error::rates.json fehlt im Repo-Root. Bitte die rates.json aus den Projekt-Deliverables per PR hochladen; sie ist die Basis, deren Saetze dieser Bot aktualisiert."
+            exit 1
+          fi
+          python3 -c "import json; json.load(open('rates.json'))" || { echo "::error::rates.json ist kein gueltiges JSON."; exit 1; }
 
       - name: Fetch official list
         run: |
-          curl -fsSL -o kassenliste.pdf "https://www.gkv-spitzenverband.de/krankenkassenliste.pdf"
+          curl -fsSL --retry 3 --retry-delay 5 \
+               -A "lohnlupe-rates-bot (github.com; woechentlicher Abgleich der Pflichtveroeffentlichung nach Par. 242 Abs. 5 SGB V)" \
+               -o kassenliste.pdf "https://www.gkv-spitzenverband.de/krankenkassenliste.pdf" \
+               || { echo "::error::Download der amtlichen Liste fehlgeschlagen (URL geaendert oder Server blockt). Alternative Quelle: ITSG-Beitragssatzdatei."; exit 1; }
           sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
           pdftotext -layout kassenliste.pdf kassenliste.txt
+          echo "--- Kopf der extrahierten Liste (Diagnose) ---"
+          head -n 15 kassenliste.txt
 
       - name: Build rates.json
         run: |
@@ -37,14 +50,31 @@ jobs:
           # Liste in rates.json ist die Auswahl; hier werden nur die Sätze erneuert.
           current = json.load(open("rates.json", encoding="utf-8"))
 
-          # Zeilenformat der amtlichen Liste: "<Name> <www...> <Satz>%"
+          # Spaltenweises Lesen statt Zeilenende-Anker: pdftotext -layout trennt
+          # Spalten durch 2+ Leerzeichen. Name = erste Spalte; Satz = erste
+          # Spalte, die wie eine Dezimalzahl 0-6 aussieht (mit oder ohne %).
+          # Immun gegen weitere Spalten dahinter (z. B. Bundesland-Oeffnungen).
           rates = {}
           for line in txt.splitlines():
-              m = re.match(r"\s*(.+?)\s{2,}\S*\s+(\d+,\d+)\s*%?\s*$", line)
-              if m:
-                  rates[m.group(1).strip()] = float(m.group(2).replace(",", "."))
+              cols = [c.strip() for c in re.split(r"\s{2,}", line.strip()) if c.strip()]
+              if len(cols) < 2:
+                  continue
+              name = cols[0]
+              if re.match(r"\d", name) or name.lower().startswith(("krankenkassenname", "seite", "stand")):
+                  continue
+              for c in cols[1:]:
+                  m = re.fullmatch(r"(\d{1,2},\d{1,2})\s*%?", c)
+                  if m:
+                      v = float(m.group(1).replace(",", "."))
+                      if 0 <= v <= 6:
+                          rates[name] = v
+                      break
           if len(rates) < 50:
-              sys.exit("Parser fand nur %d Kassen; Layout vermutlich geaendert. Abbruch." % len(rates))
+              print("Parser fand nur %d Kassen; Layout vermutlich geaendert." % len(rates))
+              print("--- Beispielzeilen fuer die Diagnose ---")
+              for l in [l for l in txt.splitlines() if l.strip()][:25]:
+                  print(repr(l))
+              sys.exit(1)
 
           def find(name):
               key = name.split("(")[0].strip().lower()
