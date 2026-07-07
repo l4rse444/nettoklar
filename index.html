@@ -3,9 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; font-src data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; font-src data:; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
-<title>nettoklar</title>
+<title>nettoklar: Brutto-Netto-Rechner 2026</title>
+<meta name="description" content="Was von deinem Gehalt übrig bleibt: Netto berechnen nach dem amtlichen BMF-Tarif 2026, jeder Abzug kurz erklärt. Läuft komplett in deinem Browser, ohne Datenübertragung.">
+<meta name="theme-color" content="#FBFBF9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317181A'/%3E%3Crect x='12' y='17' width='40' height='9' rx='4.5' fill='%230C6B4E'/%3E%3Crect x='12' y='30' width='27' height='9' rx='4.5' fill='%23A83A32'/%3E%3Crect x='12' y='43' width='16' height='9' rx='4.5' fill='%23C98A83'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nettoklar">
+<meta property="og:title" content="nettoklar: Brutto-Netto-Rechner 2026">
+<meta property="og:description" content="Was von deinem Gehalt übrig bleibt. Amtlicher Tarif 2026, jeder Abzug erklärt, alles bleibt in deinem Browser.">
+<meta property="og:url" content="https://l4rse444.github.io/nettoklar/">
+<meta property="og:image" content="https://l4rse444.github.io/nettoklar/og.png">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"nettoklar",
+"description":"Brutto-Netto-Rechner für Deutschland 2026 mit Erklärung jedes Abzugs. Berechnung nach dem amtlichen BMF-Programmablaufplan, vollständig im Browser.",
+"applicationCategory":"FinanceApplication","operatingSystem":"Web",
+"inLanguage":["de","en"],"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}
+</script>
 <style>
   /* Schriften lokal eingebettet (Fontsource, SIL Open Font License).
      Keine Verbindung zu Google-Servern; die Latin-Subsets enthalten
@@ -27,7 +44,8 @@
     --green:#0C6B4E; --green-soft:#EAF4EF;
     --red:#A83A32; --red-soft:#F8EFEE;
     --radius:10px;
-    --shadow:0 1px 2px rgba(23,24,26,.04), 0 8px 24px rgba(23,24,26,.05);
+    --shadow:0 1px 2px rgba(23,24,26,.03), 0 10px 30px rgba(23,24,26,.045);
+    --shadow-lift:0 2px 4px rgba(23,24,26,.05), 0 14px 36px rgba(23,24,26,.08);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -48,6 +66,16 @@
   }
   .wordmark{font-weight:600;font-size:16px;letter-spacing:-0.02em}
   .wordmark span{color:var(--green)}
+  .topnav{display:flex;gap:22px;margin-left:34px;margin-right:auto}
+  .topnav a, .topnav button{
+    font:inherit;font-size:13px;font-weight:500;color:var(--grey);
+    text-decoration:none;background:none;border:none;padding:0;cursor:pointer;
+    transition:color .12s;
+  }
+  .topnav a:hover, .topnav button:hover{color:var(--ink)}
+  .topnav a:focus-visible, .topnav button:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+  @media (max-width:880px){.topnav{display:none}}
+  #rechner, #optimieren{scroll-margin-top:16px}
   .topright{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
   .pill{
     font-size:12px;font-weight:500;color:var(--grey);
@@ -66,6 +94,10 @@
   .lang button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
 
   .hero{max-width:1080px;margin:0 auto;padding:44px 24px 8px}
+  .kicker{
+    font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--grey-light);margin-bottom:14px;
+  }
   .hero h1{
     font-family:'Source Serif 4',Georgia,serif;font-weight:600;
     font-size:clamp(30px,4.4vw,44px);letter-spacing:-0.015em;line-height:1.12;max-width:680px;
@@ -80,8 +112,16 @@
 
   .panel{background:var(--card);border:1px solid var(--hairline);border-radius:var(--radius);box-shadow:var(--shadow)}
 
-  .form{padding:28px}
+  .form{padding:28px;counter-reset:q}
   .q{padding:20px 0;border-bottom:1px solid var(--hairline)}
+  .form > .q > .q-label::before{
+    counter-increment:q;
+    content:counter(q,decimal-leading-zero);
+    display:inline-block;margin-right:9px;
+    font-size:10.5px;font-weight:600;letter-spacing:.08em;
+    color:var(--grey-light);font-variant-numeric:tabular-nums;
+    transform:translateY(-1px);
+  }
   .q:first-child{padding-top:0}
   .q:last-child{border-bottom:none;padding-bottom:0}
   .q-label{font-weight:600;font-size:14px;margin-bottom:4px}
@@ -176,6 +216,16 @@
   .ledger-head .lh-title{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
   .ledger-head .lh-period{font-size:12px;color:var(--grey)}
 
+  .split-bar{
+    display:flex;gap:2px;height:8px;margin:2px 0 14px;border-radius:4px;overflow:hidden;
+  }
+  .split-bar .seg-b{
+    height:100%;border-radius:2px;min-width:0;
+    transition:width .4s cubic-bezier(.25,.7,.3,1);
+  }
+  .split-bar .s-net{background:var(--green)}
+  .split-bar .s-d{background:var(--red)}
+
   .lrow{border-bottom:1px solid var(--hairline)}
   .lrow-main{
     width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:12px;
@@ -220,7 +270,8 @@
   .optim > p{color:var(--grey);margin-top:8px;max-width:620px}
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}
   @media (max-width:880px){.cards{grid-template-columns:1fr}}
-  .card{padding:24px}
+  .card{padding:24px;transition:box-shadow .25s ease, transform .25s ease}
+  .card:hover{box-shadow:var(--shadow-lift);transform:translateY(-2px)}
   .card h3{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .tag{
     font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
@@ -292,12 +343,47 @@
     cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px;
   }
   .legal-links button:hover{color:var(--ink)}
+  .foot-meta{
+    flex-basis:100%;font-size:11.5px;color:var(--grey-light);
+    padding-top:14px;margin-top:6px;border-top:1px solid var(--hairline);
+  }
+  .foot-meta a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
+  .foot-meta a:hover{color:var(--ink)}
   .legal-page{max-width:1080px;margin:24px auto 0;padding:0 24px}
   .legal-page .panel{padding:28px;font-size:13.5px;line-height:1.65;color:var(--grey)}
   .legal-page h2{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:12px}
   .legal-page h3{font-size:13.5px;font-weight:600;color:var(--ink);margin:18px 0 6px}
   .legal-page p{margin:8px 0}
   .legal-page .ph{background:#fdf3d7;border-radius:4px;padding:1px 5px;color:#8a6d1f;font-weight:500}
+
+  .sticky-net{
+    position:fixed;left:12px;right:12px;bottom:12px;z-index:40;
+    display:none;align-items:baseline;justify-content:space-between;gap:12px;
+    background:var(--ink);color:#fff;border-radius:12px;
+    padding:12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow:0 6px 24px rgba(23,24,26,.28);cursor:pointer;border:none;
+    font:inherit;text-align:left;width:auto;
+  }
+  .sticky-net .sl{font-size:12.5px;font-weight:500;color:rgba(255,255,255,.75)}
+  .sticky-net .sv{
+    font-family:'Source Serif 4',Georgia,serif;font-weight:600;font-size:21px;
+    color:#7fd4b5;font-variant-numeric:tabular-nums;letter-spacing:-0.01em;
+  }
+  .sticky-net:focus-visible{outline:2px solid #7fd4b5;outline-offset:2px}
+  @media (max-width:880px){
+    .sticky-net.show{display:flex}
+  }
+
+  @media print{
+    .topright,.hero,.form,.optim,.verified,.legal-page,footer,
+    .quickstats,.sticky-net,#regimeNote{display:none!important}
+    .topbar{padding:0 0 16px}
+    .tool{display:block;margin:0;padding:0;max-width:none}
+    .ledger-wrap{position:static}
+    .panel{box-shadow:none;border:1px solid #bbb}
+    body{background:#fff}
+    .split-bar .seg-b{transition:none}
+  }
 
   /* Smartphone- und Tablet-Anpassungen */
   @media (max-width:640px){
@@ -348,6 +434,11 @@
 
 <div class="topbar">
   <div class="wordmark">netto<span>klar</span></div>
+  <nav class="topnav" aria-label="Bereiche">
+    <a href="#rechner" id="navCalc"></a>
+    <a href="#optimieren" id="navOptim"></a>
+    <button id="navVerified" type="button"></button>
+  </nav>
   <div class="topright">
     <div class="pill" id="pillPrivacy"></div>
     <button class="pill pill-btn" id="pillVerifiedBtn" aria-expanded="false" aria-controls="verifiedSec"><b>✓</b> <span id="pillVerified"></span></button>
@@ -359,11 +450,12 @@
 </div>
 
 <section class="hero">
+  <div class="kicker" id="heroKicker"></div>
   <h1 id="heroH1"></h1>
   <p id="heroP"></p>
 </section>
 
-<main class="tool">
+<main class="tool" id="rechner">
 
   <section class="panel form" aria-label="Angaben">
 
@@ -561,6 +653,17 @@
         </div>
       </div>
 
+      <div class="split-bar" id="splitBar" aria-hidden="true">
+        <span class="seg-b s-net" id="sb-net"></span>
+        <span class="seg-b s-d" id="sb-lst" style="opacity:.9"></span>
+        <span class="seg-b s-d" id="sb-church" style="opacity:.8"></span>
+        <span class="seg-b s-d" id="sb-soli" style="opacity:.65"></span>
+        <span class="seg-b s-d" id="sb-kv" style="opacity:.72"></span>
+        <span class="seg-b s-d" id="sb-rv" style="opacity:.56"></span>
+        <span class="seg-b s-d" id="sb-av" style="opacity:.32"></span>
+        <span class="seg-b s-d" id="sb-pv" style="opacity:.44"></span>
+      </div>
+
       <div id="rows"></div>
 
       <div class="lnet">
@@ -588,7 +691,7 @@
   </div>
 </main>
 
-<section class="optim">
+<section class="optim" id="optimieren">
   <h2 id="optimH"></h2>
   <p id="optimP"></p>
 
@@ -677,6 +780,11 @@
   </div>
 </section>
 
+<button class="sticky-net" id="stickyNet" type="button" aria-hidden="true" tabindex="-1">
+  <span class="sl" id="stickyNetL"></span>
+  <span class="sv num" id="stickyNetV"></span>
+</button>
+
 <footer>
   <div class="fcol" id="footLegal"></div>
   <div class="fcol" id="footPrivacy"></div>
@@ -684,6 +792,7 @@
     <button id="lnkImpressum" type="button"></button>
     <button id="lnkDatenschutz" type="button"></button>
   </div>
+  <div class="foot-meta" id="footMeta"></div>
 </footer>
 
 <script>
@@ -965,6 +1074,7 @@ const I18N = {
 de: {
   pillPrivacy:"🔒 Deine Eingaben bleiben in deinem Browser",
   pillVerified:"Geprüft für 2026",
+  heroKicker:"Brutto-Netto-Rechner · Deutschland 2026",
   heroH1:"Was von deinem Gehalt übrig bleibt.",
   heroP:"Gib dein Brutto ein und beantworte ein paar Fragen. Du siehst dein Netto und was hinter jedem Abzug steckt.",
   qGrossL:"Dein Verdienst",
@@ -1078,7 +1188,9 @@ de: {
   ],
   footLegal:"<b>nettoklar</b> ist ein Rechner, keine Steuerberatung. Er berechnet deine Abrechnung nach dem offiziellen Tarif 2026 und zeigt die Arithmetik hinter deinen Optionen. Für Entscheidungen zu deiner persönlichen Situation sprich mit einem Steuerberater oder Lohnsteuerhilfeverein. Die Ergebnisse gelten für ein normales Angestelltenverhältnis ohne Einmalzahlungen.",
   footPrivacy:"<b>Datenschutz durch Architektur.</b> Diese Seite hat keine Berechnung auf einem Server, kein Tracking deiner Eingaben, keinen Upload. Dein Gehalt, deine Familiensituation und deine Kirchenmitgliedschaft sind besonders geschützte Daten. Der sicherste Ort dafür ist eine Seite, die sie technisch gar nicht sehen kann.",
-    lnkImpressum:"Impressum", lnkDatenschutz:"Datenschutzerklärung",
+    navCalc:"Rechner", navOptim:"Optimieren", navVerified:"Quellen & Prüfung",
+  footMeta:'Berechnung nach dem amtlichen BMF-Programmablaufplan 2026 (Stand 12.11.2025) · Alle 516 amtlichen Prüfwerte exakt · <a href="https://github.com/l4rse444/nettoklar" rel="noopener">Quelltext auf GitHub</a>',
+  lnkImpressum:"Impressum", lnkDatenschutz:"Datenschutzerklärung",
   impH:"Impressum",
   impBody:`<p>Angaben gemäß §5 DDG:</p>
 <p><span class="ph">[Vor- und Nachname]</span><br><span class="ph">[Straße und Hausnummer]</span><br><span class="ph">[PLZ und Ort]</span><br>Deutschland</p>
@@ -1118,6 +1230,7 @@ de: {
 en: {
   pillPrivacy:"🔒 Your inputs stay in your browser",
   pillVerified:"Verified for 2026",
+  heroKicker:"Gross-to-net calculator · Germany 2026",
   heroH1:"What's left of your salary.",
   heroP:"Enter your gross pay and answer a few questions. You'll see your net and what's behind every deduction.",
   qGrossL:"Your pay",
@@ -1231,7 +1344,9 @@ en: {
   ],
   footLegal:"<b>nettoklar</b> is a calculator, not tax advice. It computes your payslip using the official 2026 tariff and shows the arithmetic behind your options. For decisions about your personal situation, talk to a Steuerberater or Lohnsteuerhilfeverein. Results assume a standard employment relationship without one-off payments.",
   footPrivacy:"<b>Privacy, by architecture.</b> This page has no server-side calculation, no tracking of your inputs, no upload. Your salary, family situation and church membership are specially protected data. The safest place for them is a page that technically cannot see them.",
-    lnkImpressum:"Legal notice", lnkDatenschutz:"Privacy policy",
+    navCalc:"Calculator", navOptim:"Optimise", navVerified:"Sources & checks",
+  footMeta:'Calculated per the official BMF Programmablaufplan 2026 (12 Nov 2025) · All 516 official test values exact · <a href="https://github.com/l4rse444/nettoklar" rel="noopener">Source code on GitHub</a>',
+  lnkImpressum:"Legal notice", lnkDatenschutz:"Privacy policy",
   impH:"Legal notice (Impressum)",
   impBody:`<p><i>The German version is the legally binding one.</i></p>
 <p>Information per §5 DDG (German Digital Services Act):</p>
@@ -1327,7 +1442,9 @@ function applyLang(){
   document.getElementById("langEn").setAttribute("aria-pressed", lang==="en");
 
   setText("pillPrivacy",T.pillPrivacy); setText("pillVerified",T.pillVerified);
+  setText("heroKicker",T.heroKicker);
   setText("heroH1",T.heroH1); setText("heroP",T.heroP);
+  setText("stickyNetL",T.netL);
   setText("qGrossL",T.qGrossL); setText("qGrossH",T.qGrossH);
   setText("perMonth",T.perMonth); setText("perYear",T.perYear);
   setText("modeMonthly",T.modeMonthly); setText("modeHourly",T.modeHourly);
@@ -1363,6 +1480,8 @@ function applyLang(){
   setText("verH",T.verH); setText("verSub",T.verSub);
   setText("thWhat",T.thWhat); setText("thVal",T.thVal); setText("thSrc",T.thSrc); setText("thStatus",T.thStatus);
   setHTML("footLegal",T.footLegal); setHTML("footPrivacy",T.footPrivacy);
+  setText("navCalc",T.navCalc); setText("navOptim",T.navOptim); setText("navVerified",T.navVerified);
+  setHTML("footMeta",T.footMeta);
   setText("lnkImpressum",T.lnkImpressum); setText("lnkDatenschutz",T.lnkDatenschutz);
   setText("impH",T.impH); setHTML("impBody",T.impBody);
   setText("dsH",T.dsH); setHTML("dsBody",T.dsBody);
@@ -1480,8 +1599,10 @@ function render(){
     rowsEl.appendChild(div);
   });
 
-  document.getElementById("vNet").textContent = eur(r.net) + " €";
+  tweenNet(r.net);
+  document.getElementById("stickyNetV").textContent = eur(r.net) + " €";
   document.getElementById("vPct").textContent = r.g>0 ? T.pctText(pct1(r.net/r.g*100)) : "";
+  updateSplitBar(r);
 
   const r2 = calc(params({grossM: state.grossM + 100}));
   document.getElementById("qsMarginal").textContent = fmt.format(Math.max(0, r2.net - r.net)) + " €";
@@ -1495,6 +1616,58 @@ function render(){
   renderKk(r);
   renderPkv(r);
   renderBbgNote(r);
+}
+
+/* Netto zaehlt weich zum neuen Wert (Respekt vor prefers-reduced-motion). */
+let netShown = null, netRaf = 0;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+function tweenNet(target){
+  const el = document.getElementById("vNet");
+  if (netShown === null || reducedMotion.matches){
+    netShown = target; el.textContent = eur(target) + " €"; return;
+  }
+  const from = netShown, t0 = performance.now(), dur = 240;
+  cancelAnimationFrame(netRaf);
+  const step = now => {
+    const k = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - k, 3);
+    netShown = from + (target - from) * e;
+    el.textContent = eur(netShown) + " €";
+    if (k < 1) netRaf = requestAnimationFrame(step);
+    else { netShown = target; el.textContent = eur(target) + " €"; }
+  };
+  netRaf = requestAnimationFrame(step);
+}
+
+/* Verteilungsleiste: ein Blick zeigt, wie sich das Brutto aufteilt. */
+function updateSplitBar(r){
+  const bar = document.getElementById("splitBar");
+  if (!(r.g > 0)){ bar.style.display = "none"; return; }
+  bar.style.display = "flex";
+  const names = T.ddNames;
+  const parts = {
+    net:[Math.max(0, r.net), T.netL],
+    lst:[r.lst, names.lst], church:[r.church, names.church],
+    soli:[r.soli, T.rows.soli.l], kv:[r.kv, r.insurance === "public" ? names.kv : T.rows.pkv.l],
+    rv:[r.rv, names.rv], av:[r.av, names.av], pv:[r.pv, names.pv]
+  };
+  for (const id in parts){
+    const el = document.getElementById("sb-" + id);
+    const v = parts[id][0];
+    el.style.width = (v / r.g * 100) + "%";
+    el.title = parts[id][1] + ": " + eur(v) + " €";
+  }
+}
+
+/* Mobile: schwebendes Netto, solange der Ledger nicht im Bild ist. */
+const stickyEl = document.getElementById("stickyNet");
+stickyEl.addEventListener("click", () => {
+  document.querySelector(".ledger").scrollIntoView({behavior: reducedMotion.matches ? "auto" : "smooth", block:"start"});
+});
+if ("IntersectionObserver" in window){
+  new IntersectionObserver(entries => {
+    stickyEl.classList.toggle("show", !entries[0].isIntersecting);
+  }, {threshold: 0.05}).observe(document.querySelector(".ledger"));
 }
 
 function renderBav(rBase){
@@ -1760,6 +1933,11 @@ function toggleLegal(showId, hideId){
   show.hidden = !show.hidden;
   if (!show.hidden) show.scrollIntoView({behavior:"smooth", block:"start"});
 }
+document.getElementById("navVerified").addEventListener("click", () => {
+  const s = document.getElementById("verifiedSec");
+  if (s.hidden) document.getElementById("pillVerifiedBtn").click();
+  else s.scrollIntoView({behavior: reducedMotion.matches ? "auto" : "smooth", block:"start"});
+});
 document.getElementById("lnkImpressum").addEventListener("click",
   () => toggleLegal("impressumSec","datenschutzSec"));
 document.getElementById("lnkDatenschutz").addEventListener("click",
