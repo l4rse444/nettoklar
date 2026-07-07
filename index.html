@@ -772,12 +772,6 @@
   </div>
 </section>
 
-<section class="legal-page" id="impressumSec" hidden>
-  <div class="panel">
-    <h2 id="impH"></h2>
-    <div id="impBody"></div>
-  </div>
-</section>
 <section class="legal-page" id="datenschutzSec" hidden>
   <div class="panel">
     <h2 id="dsH"></h2>
@@ -796,7 +790,6 @@
   <div class="foot-bottom">
     <div class="foot-meta" id="footMeta"></div>
     <div class="legal-links">
-      <button id="lnkImpressum" type="button"></button>
       <button id="lnkDatenschutz" type="button"></button>
     </div>
   </div>
@@ -1199,19 +1192,12 @@ de: {
   footPrivacy:"<b>Datenschutz durch Architektur.</b> Diese Seite hat keine Berechnung auf einem Server, kein Tracking deiner Eingaben, keinen Upload. Dein Gehalt, deine Familiensituation und deine Kirchenmitgliedschaft sind besonders geschützte Daten. Der sicherste Ort dafür ist eine Seite, die sie technisch gar nicht sehen kann.",
     navCalc:"Rechner", navOptim:"Optimieren", navVerified:"Quellen & Prüfung",
   footMeta:"Berechnung nach dem amtlichen BMF-Programmablaufplan 2026 (Stand 12.11.2025) · Alle 516 amtlichen Prüfwerte exakt",
-  lnkImpressum:"Impressum", lnkDatenschutz:"Datenschutzerklärung",
-  impH:"Impressum",
-  impBody:`<p>Angaben gemäß §5 DDG:</p>
-<p>Lars Eilermann<br><span class="ph">[Straße und Hausnummer]</span><br><span class="ph">[PLZ und Ort]</span><br>Deutschland</p>
-<p>Kontakt: kontakt@lohn-lupe.de</p>
-<h3>Haftung für Inhalte</h3>
-<p>Diese Seite ist ein Rechenwerkzeug und ersetzt keine Steuer- oder Rechtsberatung. Alle Berechnungen erfolgen nach bestem Wissen auf Grundlage der im Abschnitt "Geprüft für 2026" dokumentierten Rechtsquellen, ohne Gewähr für Vollständigkeit und Richtigkeit im Einzelfall. Verbindlich ist allein die Abrechnung deines Arbeitgebers bzw. der Bescheid des Finanzamts.</p>
-<h3>Haftung für Links</h3>
-<p>Für Inhalte verlinkter externer Seiten sind ausschließlich deren Betreiber verantwortlich.</p>`,
+  lnkDatenschutz:"Datenschutzerklärung",
   dsH:"Datenschutzerklärung",
   dsBody:`<p><b>Kurzfassung: Diese Seite erhebt selbst keine Daten.</b> Deine Eingaben (Gehalt, Familiensituation, Kirchenmitgliedschaft, Versicherung) werden ausschließlich lokal in deinem Browser verarbeitet. Es gibt keine Übertragung an einen Server, keine Speicherung, keine Cookies, kein Tracking und keine Analyse-Dienste.</p>
 <h3>Verantwortlicher</h3>
-<p>Lars Eilermann, <span class="ph">[Anschrift wie im Impressum]</span>, E-Mail: kontakt@lohn-lupe.de</p>
+<p>Lars Eilermann, E-Mail: kontakt@lohn-lupe.de</p>
+<p>lohnlupe ist ein privates, nicht-kommerzielles Hobbyprojekt: keine Werbung, keine Affiliate-Links, keine Bezahlangebote, keine Einnahmen.</p>
 <h3>Berechnung im Browser</h3>
 <p>Sämtliche Berechnungen laufen als JavaScript auf deinem Gerät. Die Seite hat technisch keine Möglichkeit, deine Eingaben einzusehen: Es existiert kein Berechnungs-Server. Auch der lokale Speicher des Browsers (Cookies, localStorage) wird nicht genutzt; nach dem Schließen des Tabs sind alle Eingaben weg.</p>
 <h3>Hosting und Server-Logfiles</h3>
@@ -1356,21 +1342,13 @@ en: {
   footPrivacy:"<b>Privacy, by architecture.</b> This page has no server-side calculation, no tracking of your inputs, no upload. Your salary, family situation and church membership are specially protected data. The safest place for them is a page that technically cannot see them.",
     navCalc:"Calculator", navOptim:"Optimise", navVerified:"Sources & checks",
   footMeta:"Calculated per the official BMF Programmablaufplan 2026 (12 Nov 2025) · All 516 official test values exact",
-  lnkImpressum:"Legal notice", lnkDatenschutz:"Privacy policy",
-  impH:"Legal notice (Impressum)",
-  impBody:`<p><i>The German version is the legally binding one.</i></p>
-<p>Information per §5 DDG (German Digital Services Act):</p>
-<p>Lars Eilermann<br><span class="ph">[Street and number]</span><br><span class="ph">[Postal code and city]</span><br>Germany</p>
-<p>Contact: kontakt@lohn-lupe.de</p>
-<h3>Liability for content</h3>
-<p>This page is a calculation tool and no substitute for tax or legal advice. All calculations are made to the best of our knowledge based on the legal sources documented in the "Verified for 2026" section, without guarantee of completeness or accuracy in individual cases. Only your employer's payslip and the tax office's assessment are binding.</p>
-<h3>Liability for links</h3>
-<p>The operators of linked external pages are solely responsible for their content.</p>`,
+  lnkDatenschutz:"Privacy policy",
   dsH:"Privacy policy",
   dsBody:`<p><i>The German version is the legally binding one.</i></p>
 <p><b>In short: this page itself collects no data.</b> Your inputs (salary, family situation, church membership, insurance) are processed exclusively in your browser. There is no transmission to a server, no storage, no cookies, no tracking and no analytics.</p>
 <h3>Controller</h3>
-<p>Lars Eilermann, <span class="ph">[address as in the legal notice]</span>, email: kontakt@lohn-lupe.de</p>
+<p>Lars Eilermann, email: kontakt@lohn-lupe.de</p>
+<p>lohnlupe is a private, non-commercial hobby project: no ads, no affiliate links, no paid offers, no revenue.</p>
 <h3>Calculation in the browser</h3>
 <p>All calculations run as JavaScript on your device. The page technically cannot see your inputs: there is no calculation server. Browser storage (cookies, localStorage) is not used either; closing the tab discards all inputs.</p>
 <h3>Hosting and server logs</h3>
@@ -1495,8 +1473,7 @@ function applyLang(){
   setHTML("footLegal",T.footLegal); setHTML("footPrivacy",T.footPrivacy);
   setText("navCalc",T.navCalc); setText("navOptim",T.navOptim); setText("navVerified",T.navVerified);
   setHTML("footMeta",T.footMeta);
-  setText("lnkImpressum",T.lnkImpressum); setText("lnkDatenschutz",T.lnkDatenschutz);
-  setText("impH",T.impH); setHTML("impBody",T.impBody);
+  setText("lnkDatenschutz",T.lnkDatenschutz);
   setText("dsH",T.dsH); setHTML("dsBody",T.dsBody);
 
   // Bundesländer (names per language)
@@ -1940,9 +1917,8 @@ document.getElementById("bavSlider").addEventListener("input",()=>renderBav(calc
 document.getElementById("partnerGross").addEventListener("input",renderClassCompare);
 document.getElementById("pkvOffer").addEventListener("input",()=>renderPkv(calc(params())));
 
-function toggleLegal(showId, hideId){
-  const show = document.getElementById(showId), hide = document.getElementById(hideId);
-  hide.hidden = true;
+function toggleLegal(showId){
+  const show = document.getElementById(showId);
   show.hidden = !show.hidden;
   if (!show.hidden) show.scrollIntoView({behavior:"smooth", block:"start"});
 }
@@ -1951,10 +1927,8 @@ document.getElementById("navVerified").addEventListener("click", () => {
   if (s.hidden) document.getElementById("pillVerifiedBtn").click();
   else s.scrollIntoView({behavior: reducedMotion.matches ? "auto" : "smooth", block:"start"});
 });
-document.getElementById("lnkImpressum").addEventListener("click",
-  () => toggleLegal("impressumSec","datenschutzSec"));
 document.getElementById("lnkDatenschutz").addEventListener("click",
-  () => toggleLegal("datenschutzSec","impressumSec"));
+  () => toggleLegal("datenschutzSec"));
 
 applyLang();
 
