@@ -749,9 +749,21 @@
       <div class="big-line" id="pkvStatus"></div>
       <div id="pkvOfferRow" hidden style="margin-top:14px">
         <div class="q-label" style="font-size:13px" id="pkvOfferL"></div>
-        <div class="money-input" style="max-width:200px;margin-top:8px">
-          <span class="cur">€</span>
-          <input id="pkvOffer" type="text" inputmode="decimal" value="">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+          <div style="flex:1;min-width:150px">
+            <label class="q-hint" style="margin-bottom:6px;display:block" id="pkvOfferTotL"></label>
+            <div class="money-input">
+              <span class="cur">€</span>
+              <input id="pkvOffer" type="text" inputmode="decimal" value="">
+            </div>
+          </div>
+          <div style="flex:1;min-width:150px">
+            <label class="q-hint" style="margin-bottom:6px;display:block" id="pkvOfferPvL"></label>
+            <div class="money-input">
+              <span class="cur">€</span>
+              <input id="pkvOfferPv" type="text" inputmode="decimal" value="60">
+            </div>
+          </div>
         </div>
         <div class="big-line" id="pkvResult"></div>
       </div>
@@ -1158,8 +1170,10 @@ de: {
   pkvLead:"Als Angestellte:r darfst du nur oberhalb der Versicherungspflichtgrenze (JAEG) in die PKV. Wir prüfen zuerst, ob das für dich überhaupt eine Option ist.",
   pkvNotEligible:(jaeg,gap)=>`Für dich aktuell <span class="hl">keine Option</span>: Die Grenze liegt bei etwa <span class="hl">${jaeg} € brutto im Jahr</span>. Dir fehlen rund ${gap} € monatlich. Das ist übrigens ein Schutz, keine Schikane.`,
   pkvEligible:(gkv)=>`Du liegst über der Grenze, die PKV steht dir offen. Zum Vergleich: Deine gesetzliche Versicherung kostet dich derzeit <span class="hl">${gkv} € im Monat</span> (dein Anteil, Kranken- + Pflegeversicherung). Das ist die Zahl, die jedes PKV-Angebot schlagen will.`,
-  pkvOfferL:"Hast du ein PKV-Angebot? Trag die Monatsprämie ein (gesamt, inkl. Pflege):",
-  pkvCompare:(own,diff,cheaper)=>`Nach Arbeitgeberzuschuss zahlst du davon selbst etwa <span class="hl">${own} €</span>. Das wäre monatlich <span class="hl ${cheaper?'pos':''}">${diff} € ${cheaper?'günstiger':'teurer'}</span> als deine GKV heute.`,
+  pkvOfferL:"Hast du ein PKV-Angebot? Dann rechnen wir es komplett durch, inklusive Arbeitgeberzuschuss und Steuereffekt:",
+  pkvOfferTotL:"Monatsprämie gesamt (inkl. Pflege)",
+  pkvOfferPvL:"davon Pflegepflichtversicherung",
+  pkvCompare:(own,diff,cheaper,tax,taxUp)=>`Nach Arbeitgeberzuschuss zahlst du davon selbst etwa <span class="hl">${own} €</span>. Netto gegen Netto gerechnet, also inklusive der Lohnsteuer, die sich über die Vorsorgepauschale um ${tax} € ${taxUp?'erhöht':'verringert'}, ${cheaper?`hättest du <span class="hl pos">${diff} € mehr</span>`:`bliebe dir <span class="hl">${diff} € weniger</span>`} Netto im Monat als heute in der GKV.`,
   pkvAlready:"Du bist bereits privat versichert. Dieser Vergleich richtet sich an gesetzlich Versicherte.",
   pkvNa:"In deiner Beschäftigungsart stellt sich diese Frage nicht.",
   pkvFine:"Der Monatsvergleich ist nur die halbe Wahrheit: PKV-Prämien steigen mit dem Alter unabhängig vom Einkommen, Partner und Kinder sind nicht kostenlos mitversichert, und eine Rückkehr in die GKV ist ab 55 praktisch ausgeschlossen. Die Entscheidung wirkt bis in die Rente. Rechnerisch passt die PKV am ehesten zu jungen, gesunden Gutverdienern ohne Familienpläne. Wenn, dann mit unabhängiger Honorarberatung, nicht über Provisionsvertrieb.",
@@ -1308,8 +1322,10 @@ en: {
   pkvLead:"As an employee, you can only switch to private insurance above the insurance threshold (JAEG). We check first whether it's even an option for you.",
   pkvNotEligible:(jaeg,gap)=>`Currently <span class="hl">not an option</span> for you: the threshold is around <span class="hl">€${jaeg} gross per year</span>. You're about €${gap} a month short. That's a protection, by the way, not a restriction.`,
   pkvEligible:(gkv)=>`You're above the threshold, so private insurance is open to you. For reference: your public insurance currently costs you <span class="hl">€${gkv} a month</span> (your share, health + care). That's the number any private offer has to beat.`,
-  pkvOfferL:"Got a private-insurance offer? Enter the monthly premium (total, incl. care):",
-  pkvCompare:(own,diff,cheaper)=>`After the employer subsidy, you'd pay about <span class="hl">€${own}</span> yourself. That's <span class="hl ${cheaper?'pos':''}">€${diff} ${cheaper?'cheaper':'more expensive'}</span> per month than your public insurance today.`,
+  pkvOfferL:"Got a private-insurance offer? We'll run the full numbers, including the employer subsidy and the tax effect:",
+  pkvOfferTotL:"Total monthly premium (incl. care)",
+  pkvOfferPvL:"of which long-term care insurance",
+  pkvCompare:(own,diff,cheaper,tax,taxUp)=>`After the employer subsidy, you'd pay about <span class="hl">€${own}</span> yourself. Comparing net to net, including income tax ${taxUp?'rising':'falling'} by €${tax} via the pension-provision allowance, you'd have <span class="hl ${cheaper?'pos':''}">€${diff} ${cheaper?'more':'less'}</span> net per month than in public insurance today.`,
   pkvAlready:"You're already privately insured. This comparison is for publicly insured employees.",
   pkvNa:"This question doesn't arise in your employment type.",
   pkvFine:"The monthly comparison is only half the truth: private premiums rise with age regardless of income, partners and children aren't co-insured for free, and returning to public insurance is practically impossible from age 55. The decision reaches into retirement. On paper, private insurance suits young, healthy high earners without family plans. If you consider it, use independent fee-based advice, not commission-driven sales.",
@@ -1729,7 +1745,7 @@ function renderKk(r){
 
 function renderPkv(r){
   setText("pkvH",T.pkvH); setText("pkvLead",T.pkvLead);
-  setText("pkvOfferL",T.pkvOfferL); setText("pkvFine",T.pkvFine);
+  setText("pkvOfferL",T.pkvOfferL); setText("pkvOfferTotL",T.pkvOfferTotL); setText("pkvOfferPvL",T.pkvOfferPvL); setText("pkvFine",T.pkvFine);
   const st = document.getElementById("pkvStatus");
   const offerRow = document.getElementById("pkvOfferRow");
   offerRow.hidden = true;
@@ -1747,11 +1763,18 @@ function renderPkv(r){
   const prem = parseMoney(document.getElementById("pkvOffer").value);
   const resEl = document.getElementById("pkvResult");
   if (prem <= 0){ resEl.innerHTML = ""; return; }
-  const agPv = LAENDER[state.landIdx][0] === "SN" ? 0.013 : 0.018;
-  const employer = Math.min(prem/2, (C.pkvAgKvRate + agPv) * Math.min(state.grossM, C.bbgKVmonth));
-  const own = Math.max(0, prem - employer);
-  const diff = gkvCost - own;
-  resEl.innerHTML = T.pkvCompare(fmt.format(own), fmt.format(Math.abs(diff)), diff > 0);
+  /* Voller Zwei-Welten-Vergleich über den PAP-exakten Rechenkern:
+     Zuschuss getrennt gedeckelt (§257 SGB V / §61 SGB XI), Lohnsteuer
+     über die geänderte Vorsorgepauschale. Basisabsicherung = volle
+     Prämie (konservativ, wie im Hauptrechner ohne ELStAM-Wert). */
+  let pvPart = parseMoney(document.getElementById("pkvOfferPv").value);
+  pvPart = Math.max(0, Math.min(isNaN(pvPart) ? 0 : pvPart, prem));
+  const rPriv = calc(params({insurance:"private", pkvKv: prem - pvPart, pkvPv: pvPart, pkpv: null}));
+  const own = rPriv.kv;
+  const netDiff = rPriv.net - r.net;
+  const taxDelta = (rPriv.lst + rPriv.soli + rPriv.church) - (r.lst + r.soli + r.church);
+  resEl.innerHTML = T.pkvCompare(fmt.format(own), fmt.format(Math.abs(netDiff)), netDiff > 0,
+                                 fmt.format(Math.abs(taxDelta)), taxDelta > 0);
 }
 
 function renderBbgNote(r){
@@ -1923,6 +1946,7 @@ document.getElementById("pkpv").addEventListener("input",e=>{
 document.getElementById("bavSlider").addEventListener("input",()=>renderBav(calc(params())));
 document.getElementById("partnerGross").addEventListener("input",renderClassCompare);
 document.getElementById("pkvOffer").addEventListener("input",()=>renderPkv(calc(params())));
+document.getElementById("pkvOfferPv").addEventListener("input",()=>renderPkv(calc(params())));
 
 function toggleLegal(showId){
   const show = document.getElementById(showId);
