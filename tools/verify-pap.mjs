@@ -71,11 +71,19 @@ const FIXTURES = [
   [{ grossM: 4200, grossY: 50400 }, 2712.58],
   [{ grossM: 2200, grossY: 26400 }, 1594.50],
   [{ grossM: 7000, grossY: 84000, insurance: "private", pkvKv: 650, pkvPv: 60 }, 4357.83],
-  [{ grossM: 1500, grossY: 18000, workerType: "werkstudent" }, 1371.32]
+  [{ grossM: 1500, grossY: 18000, workerType: "werkstudent" }, 1371.32],
+  /* Realfall-Fixtures: anonyme Parameter-Tupel aus echten Juli-2026-Abrechnungen,
+     jeweils auf den Cent gegen den gedruckten Auszahlungsbetrag abgeglichen
+     (Brutto = Gesamtbrutto abzueglich Entgeltumwandlung; Kasse aus dem
+     KV-Gesamtbeitrag der Abrechnung abgeleitet). Toleranz 1 Cent wegen
+     Rundungsrichtung des AG-Zuschusses im Abrechnungsprogramm. */
+  [{ grossM: 8798.43, grossY: 105581.16, zusatzPct: 2.69 }, 5078.33],                                    // StKl I, TK, freiwillig GKV
+  [{ grossM: 8357.68, grossY: 100292.16, taxClass: 4, kids: 2, landIdx: 5, zusatzPct: 2.89 }, 4905.95],  // StKl IV, 2 Kinder, HH, HEK, bAV
+  [{ grossM: 21344.53, grossY: 256134.36, taxClass: 3, kids: 3, landIdx: 1, zusatzPct: 2.69 }, 13124.09] // StKl III, 3 Kinder, BY, TK, Soli-Milderung
 ];
 for (const [o, expected] of FIXTURES) {
   const net = calc(P(o)).net;
-  if (Math.abs(net - expected) > 0.005) { failures++; console.error(`FAIL Fixture ${o.grossM}: ${net.toFixed(2)} != ${expected}`); }
+  if (Math.abs(net - expected) > 0.011) { failures++; console.error(`FAIL Fixture ${o.grossM}: ${net.toFixed(2)} != ${expected}`); }
 }
 
 /* Gesetzliche Invarianten. */
