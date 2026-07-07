@@ -764,6 +764,7 @@
   <div class="panel">
     <h2><span style="color:var(--green)">✓</span> <span id="verH"></span></h2>
     <p class="sub" id="verSub"></p>
+    <p class="sub" id="verStand" hidden style="color:var(--green)"></p>
     <table class="rates">
       <thead><tr><th id="thWhat"></th><th id="thVal"></th><th class="src" id="thSrc"></th><th id="thStatus"></th></tr></thead>
       <tbody id="ratesBody"></tbody>
@@ -1174,6 +1175,7 @@ de: {
   classSingleMsg:"Steuerklassen lassen sich nur als Ehepaar oder eingetragene Partnerschaft wählen. Für dich ändert sich hier gerade nichts.",
   bbgNote:(rv)=>`<b>Du liegst über einer Beitragsbemessungsgrenze.</b> Auf den Teil deines Gehalts über der Grenze fällt keine ${rv?'Renten- und Arbeitslosenversicherung':'Kranken- und Pflegeversicherung'} mehr an. Jeder weitere Euro Gehaltserhöhung kostet dich dadurch weniger Abzüge als der davor.`,
   verH:"Geprüft für 2026: jede Zahl mit Quelle",
+  verStand:(d)=>`Krankenkassen-Zusatzbeiträge: Stand ${d}. Diese Liste hält sich selbst aktuell und wird wöchentlich mit der amtlichen Liste des GKV-Spitzenverbands abgeglichen.`,
   verSub:"Jeder Wert trägt seine Rechtsquelle und das Datum der letzten Prüfung. Die Lohnsteuerberechnung ist gegen die amtlichen maschinellen Prüftabellen des BMF-Programmablaufplans 2026 abgeglichen (516 von 516 Werten exakt: allgemeine und besondere Tabelle, Steuerklassen I bis VI, gesetzlich wie privat versichert). Alle übrigen Werte sind gegen ihre amtlichen Quellen bestätigt, zuletzt am 6. Juli 2026.",
   thWhat:"Was", thVal:"Wert 2026", thSrc:"Quelle", thStatus:"Status",
   confHi:"Geprüft · Jul 2026", confMed:"In Nachprüfung",
@@ -1330,6 +1332,7 @@ en: {
   classSingleMsg:"Tax classes only apply to married couples and registered partnerships. Nothing changes here for you right now.",
   bbgNote:(rv)=>`<b>You're above a contribution ceiling.</b> The part of your salary above the limit is no longer charged ${rv?'pension and unemployment':'health and care'} insurance. Each additional euro of raise therefore costs you less in deductions than the one before.`,
   verH:"Verified for 2026: every number, sourced",
+  verStand:(d)=>`Health-insurer rates: as of ${d}. This list keeps itself current and is reconciled weekly with the official GKV-Spitzenverband list.`,
   verSub:"Every value carries its legal source and the date we last checked it. The income tax calculation is validated against the official machine test tables of the BMF Programmablaufplan 2026 (516 of 516 values exact: general and special table, tax classes I to VI, publicly and privately insured). All remaining values are confirmed against their official sources, last checked 6 July 2026.",
   thWhat:"What", thVal:"2026 value", thSrc:"Source", thStatus:"Status",
   confHi:"Verified · Jul 2026", confMed:"Being re-verified",
@@ -1485,6 +1488,9 @@ function applyLang(){
   setHTML("classFine",T.classFine); setText("classSingleMsg",T.classSingleMsg);
   setText("moreH",T.moreH); setHTML("moreBody",T.moreBody);
   setText("verH",T.verH); setText("verSub",T.verSub);
+  const vsEl = document.getElementById("verStand");
+  vsEl.hidden = !RATES_STAND;
+  if (RATES_STAND) vsEl.textContent = T.verStand(RATES_STAND);
   setText("thWhat",T.thWhat); setText("thVal",T.thVal); setText("thSrc",T.thSrc); setText("thStatus",T.thStatus);
   setHTML("footLegal",T.footLegal); setHTML("footPrivacy",T.footPrivacy);
   setText("navCalc",T.navCalc); setText("navOptim",T.navOptim); setText("navVerified",T.navVerified);
