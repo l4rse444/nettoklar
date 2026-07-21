@@ -1,10 +1,10 @@
 {
-  "stand": "2026-07-06",
+  "stand": "2026-07-21",
   "quelle": "Kassenmeldungen 2025/26; kanonisch: GKV-Spitzenverband Krankenkassenliste (§242 Abs. 5 SGB V)",
   "zusatzDefault": 2.9,
   "kkCheapest": {
-    "name": "hkk Krankenkasse",
-    "rate": 2.59
+    "name": "AOK Rheinland-Pfalz/Saarland",
+    "rate": 2.47
   },
   "kassen": [
     [
